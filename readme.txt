@@ -5,7 +5,7 @@ Tags: geodirectory, property, real estate, rental, for sale
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.0
-Stable tag: 2.0.7
+Stable tag: 2.0.8
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -46,7 +46,7 @@ Automatic updates should work seamlessly. To avoid unforeseen problems, we alway
 
 == Changelog =
 
-= 2.0.7 - 2025-11-03 =
+= 2.0.8 - 2025-11-03 =
 * WordPress 6.8.3 compatibility check - COMPATIBILITY
 
 = 2.0.6 =
