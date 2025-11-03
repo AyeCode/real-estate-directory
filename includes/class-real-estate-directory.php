@@ -32,9 +32,7 @@ final class Real_Estate_Directory {
 	public static function instance() {
 		if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Real_Estate_Directory ) ) {
 			self::$instance = new Real_Estate_Directory;
-			//self::$instance->setup_constants();
-
-			add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
+			self::$instance->load_textdomain();
 
 			if ( ! class_exists( 'GeoDirectory' ) ) {
 				add_action( 'admin_notices', array( self::$instance, 'geodirectory_notice' ) );
@@ -42,7 +40,7 @@ final class Real_Estate_Directory {
 				return self::$instance;
 			}
 
-			if ( version_compare( PHP_VERSION, '5.6', '<' ) ) {
+			if ( version_compare( PHP_VERSION, '7.0', '<' ) ) {
 				add_action( 'admin_notices', array( self::$instance, 'php_version_notice' ) );
 
 				return self::$instance;
@@ -63,12 +61,11 @@ final class Real_Estate_Directory {
 	 * @return void
 	 */
 	public function includes(){
-		// blocks
-		require_once(plugin_dir_path(REAL_ESTATE_DIRECTORY_PLUGIN_FILE) . 'includes/blocks/class-geodir-widget-mortgage-calculator.php');
-		require_once(plugin_dir_path(REAL_ESTATE_DIRECTORY_PLUGIN_FILE) . 'includes/blocks/class-geodir-widget-energy-rating.php');
-		require_once(plugin_dir_path(REAL_ESTATE_DIRECTORY_PLUGIN_FILE) . 'includes/blocks/class-geodir-widget-walk-score.php');
+		// Blocks
+		require_once( plugin_dir_path( REAL_ESTATE_DIRECTORY_PLUGIN_FILE ) . 'includes/blocks/class-geodir-widget-mortgage-calculator.php' );
+		require_once( plugin_dir_path( REAL_ESTATE_DIRECTORY_PLUGIN_FILE ) . 'includes/blocks/class-geodir-widget-energy-rating.php' );
+		require_once( plugin_dir_path( REAL_ESTATE_DIRECTORY_PLUGIN_FILE ) . 'includes/blocks/class-geodir-widget-walk-score.php' );
 	}
-
 
 	/**
 	 * Handle actions and filters.
@@ -97,10 +94,8 @@ final class Real_Estate_Directory {
 	 * @return array The modified array of dummy posts.
 	 */
 	public function add_dummy_data_fields( $dummy_posts, $key ) {
-
-		if ( ! empty($dummy_posts) && ('property_sale' === $key ||  'property_rent' === $key) ) {
+		if ( ! empty( $dummy_posts ) && ( 'property_sale' === $key ||  'property_rent' === $key ) ) {
 			foreach ( $dummy_posts as $i => $dummy_post ) {
-
 				// add the energy rating (0-150) (EU one goes to 100 so lets keep it under that
 				$dummy_post['energy_rating'] = rand(50, 100);
 
@@ -125,15 +120,12 @@ final class Real_Estate_Directory {
 	 *
 	 * @return array List of custom fields with dummy data custom fields added.
 	 */
-	public function add_dummy_data_custom_fields($fields, $post_type, $package_id) {
-
-
-		if ( !empty( $_REQUEST['data_type'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	public function add_dummy_data_custom_fields( $fields, $post_type, $package_id ) {
+		if ( ! empty( $_REQUEST['data_type'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$key = sanitize_key( $_REQUEST['data_type'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$package = ($package_id=='') ? '' : array($package_id);
+			$package = $package_id == '' ? '' : array( $package_id );
 
 			if ( 'property_sale' === $key ||  'property_rent' === $key ) {
-
 				// virtual tour field
 				$fields[] = array(
 					'post_type'      => $post_type,
@@ -155,8 +147,6 @@ final class Real_Estate_Directory {
 					)
 				);
 			}
-
-
 		}
 
 		return $fields;
@@ -170,7 +160,6 @@ final class Real_Estate_Directory {
 	 * @return array The array of predefined fields.
 	 */
 	public function add_predefined_fields( $custom_fields ) {
-
 		// virtual_tour
 		$custom_fields['virtual_tour'] = array( // The key value should be unique and not contain any spaces.
 			'field_type'  => 'textarea',
@@ -241,18 +230,11 @@ final class Real_Estate_Directory {
 	 * @return void
 	 */
 	public function load_textdomain() {
-		// Determines the current locale.
-		if ( function_exists( 'determine_locale' ) ) {
-			$locale = determine_locale();
-		} else if ( function_exists( 'get_user_locale' ) ) {
-			$locale = get_user_locale();
-		} else {
-			$locale = get_locale();
-		}
+		$locale = determine_locale();
 
 		$locale = apply_filters( 'plugin_locale', $locale, 'real-estate-directory' );
 
-		unload_textdomain( 'real-estate-directory' );
+		unload_textdomain( 'real-estate-directory', true );
 		load_textdomain( 'real-estate-directory', WP_LANG_DIR . '/real-estate-directory/real-estate-directory-' . $locale . '.mo' );
 		load_plugin_textdomain( 'real-estate-directory', false, basename( dirname( REAL_ESTATE_DIRECTORY_PLUGIN_FILE ) ) . '/languages/' );
 	}
@@ -270,6 +252,17 @@ final class Real_Estate_Directory {
 		}
 	}
 
+	/**
+	 * Show a warning to sites running PHP < 7.0
+	 *
+	 * @static
+	 * @access private
+	 * @since 2.0
+	 * @return void
+	 */
+	public static function php_version_notice() {
+		echo '<div class="error"><p>' . __( 'Your version of PHP is below the minimum version of PHP required by Real Estate Directory plugin . Please contact your host and request that your version be upgraded to 7.0 or later.', 'real-estate-directory' ) . '</p></div>';
+	}
 
 	/**
 	 * Register widgets.

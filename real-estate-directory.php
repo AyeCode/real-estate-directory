@@ -10,8 +10,8 @@
  * @wordpress-plugin
  * Plugin Name:       Real Estate Directory
  * Plugin URI:        https://wpgeodirectory.com/
- * Description:       Add real estate functionality to your site.
- * Version:           2.0.6
+ * Description:       Add-on for GeoDirectory adds extra real estate functionality to your real estate website.
+ * Version:           2.0.7
  * Requires at least: 6.0
  * Requires PHP:      7.0
  * Author:            AyeCode Ltd
@@ -29,7 +29,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! defined( 'REAL_ESTATE_DIRECTORY_VERSION' ) ) {
-	define( 'REAL_ESTATE_DIRECTORY_VERSION', '2.0.6' );
+	define( 'REAL_ESTATE_DIRECTORY_VERSION', '2.0.7' );
 }
 
 if ( ! defined( 'REAL_ESTATE_DIRECTORY_MIN_CORE' ) ) {
@@ -45,14 +45,15 @@ if ( ! defined( 'REAL_ESTATE_DIRECTORY_MIN_CORE' ) ) {
  *
  * @since 2.0
  */
-function real_estate_directory_load() {
+function geodir_real_estate_directory_load() {
+	global $geodir_real_estate_directory;
 
 	if ( ! defined( 'REAL_ESTATE_DIRECTORY_PLUGIN_FILE' ) ) {
 		define( 'REAL_ESTATE_DIRECTORY_PLUGIN_FILE', __FILE__ );
 	}
 
 	// Min core version check
-	if ( ! function_exists( 'geodir_min_version_check' ) ) {
+	if ( ! function_exists( "geodir_min_version_check" ) || ! geodir_min_version_check( "Real Estate Directory", REAL_ESTATE_DIRECTORY_MIN_CORE ) ) {
 		return '';
 	}
 
@@ -60,9 +61,8 @@ function real_estate_directory_load() {
 	 * The core plugin class that is used to define internationalization,
 	 * dashboard-specific hooks, and public-facing site hooks.
 	 */
-	require_once( plugin_dir_path( REAL_ESTATE_DIRECTORY_PLUGIN_FILE ) . 'includes/class-real-estate-directory.php' );
+	require_once ( plugin_dir_path( REAL_ESTATE_DIRECTORY_PLUGIN_FILE ) . 'includes/class-real-estate-directory.php' );
 
-	return Real_Estate_Directory::instance();
+    return $geodir_real_estate_directory = Real_Estate_Directory::instance();
 }
-add_action( 'plugins_loaded', 'real_estate_directory_load' );
-
+add_action( 'plugins_loaded', 'geodir_real_estate_directory_load', 20 );

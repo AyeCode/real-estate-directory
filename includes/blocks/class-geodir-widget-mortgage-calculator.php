@@ -35,7 +35,7 @@ class GeoDir_Widget_Mortgage_Calculator extends WP_Super_Duper {
 			),
 			'block-keywords'   => "['geodir','mortgage','calculator']",
 			'widget_ops'       => array(
-				'classname'                   => 'geodir-mortgage-calculator-container' . ( geodir_design_style() ? ' bsui' : '' ),
+				'classname'                   => 'geodir-mortgage-calculator-container ' . geodir_bsui_class(),
 				'description'                 => esc_html__( 'Adds a mortgage_calculator for real estate.', 'real-estate-directory' ),
 				'customize_selective_refresh' => true,
 				'geodirectory'                => true,
@@ -250,10 +250,6 @@ class GeoDir_Widget_Mortgage_Calculator extends WP_Super_Duper {
 	 */
 	public function output( $instance = array(), $args = array(), $content = '' ) {
 		$output = $this->output_html( $instance, $args );
-//		$output .= $this->output_js( $instance, $args );
-
-		//$output .= '<div class="" >';
-
 
 		return $output;
 	}
@@ -285,7 +281,6 @@ class GeoDir_Widget_Mortgage_Calculator extends WP_Super_Duper {
 		$styles = sd_build_aui_styles( $instance );
 		$style  = $styles ? ' style="' . $styles . '"' : '';
 
-
 		ob_start();
 		?>
         <div class="<?php echo esc_attr( $wrap_class ); ?>" <?php echo esc_attr( $style ); ?>>
@@ -295,8 +290,7 @@ class GeoDir_Widget_Mortgage_Calculator extends WP_Super_Duper {
                         <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
                             <div class="position-relative">
                                 <canvas id="geodir_mortgageChart"></canvas>
-                                <div id="geodir_totalPayment"
-                                     class="position-absolute top-50 start-50 translate-middle text-center h4 "></div>
+                                <div id="geodir_totalPayment" class="position-absolute top-50 start-50 translate-middle text-center h4 "></div>
                                 <div class="position-absolute top-50 start-50 translate-middle text-center text-muted mt-4"><?php esc_attr_e( 'Monthly', 'real-estate-directory' ); ?></div>
                             </div>
                         </div>
@@ -304,38 +298,31 @@ class GeoDir_Widget_Mortgage_Calculator extends WP_Super_Duper {
                     <div class="col-12 col-md-6">
                         <div id="legend" class="list-group mt-3 fs-sm list-group-flush rounded">
                             <div class="list-group-item d-flex px-2">
-                                <span class="fw-bold"><i
-                                            class="far fa-circle text-gray me-1"></i> <?php  esc_attr_e( 'Down Payment', 'real-estate-directory' ); ?></span>
+                                <span class="fw-bold"><i class="far fa-circle text-gray me-1"></i> <?php  esc_attr_e( 'Down Payment', 'real-estate-directory' ); ?></span>
                                 <span class="ms-auto calc-dp-value"></span>
                             </div>
                             <div class="list-group-item d-flex px-2">
-                                <span class="fw-bold"><i
-                                            class="far fa-circle text-gray me-1"></i> <?php  esc_attr_e( 'Loan Amount', 'real-estate-directory' ); ?></span>
+                                <span class="fw-bold"><i class="far fa-circle text-gray me-1"></i> <?php  esc_attr_e( 'Loan Amount', 'real-estate-directory' ); ?></span>
                                 <span class="ms-auto calc-la-value"></span>
                             </div>
                             <div class="list-group-item d-flex px-2">
-                                <span class="fw-bold"><i class="far fa-dot-circle me-1"
-                                                         style="color: #36a2eb;"></i> <?php  esc_attr_e( 'Monthly Mortgage Payment', 'real-estate-directory' ); ?></span>
+                                <span class="fw-bold"><i class="far fa-dot-circle me-1" style="color: #36a2eb;"></i> <?php  esc_attr_e( 'Monthly Mortgage Payment', 'real-estate-directory' ); ?></span>
                                 <span class="ms-auto calc-mmp-value"></span>
                             </div>
                             <div class="list-group-item d-flex px-2">
-                                <span class="fw-bold"><i class="far fa-dot-circle me-1"
-                                                         style="color: #ff6384;"></i> <?php  esc_attr_e( 'Property Tax', 'real-estate-directory' ); ?></span>
+                                <span class="fw-bold"><i class="far fa-dot-circle me-1" style="color: #ff6384;"></i> <?php  esc_attr_e( 'Property Tax', 'real-estate-directory' ); ?></span>
                                 <span class="ms-auto calc-pt-value"></span>
                             </div>
                             <div class="list-group-item d-flex px-2">
-                                <span class="fw-bold"><i class="far fa-dot-circle me-1"
-                                                         style="color: #ff9f40;"></i> <?php  esc_attr_e( 'Home Insurance', 'real-estate-directory' ); ?></span>
+                                <span class="fw-bold"><i class="far fa-dot-circle me-1" style="color: #ff9f40;"></i> <?php  esc_attr_e( 'Home Insurance', 'real-estate-directory' ); ?></span>
                                 <span class="ms-auto calc-hi-value"></span>
                             </div>
                             <div class="list-group-item d-flex px-2">
-                                <span class="fw-bold"><i class="far fa-dot-circle me-1"
-                                                         style="color: #ffcd56;"></i> <?php  esc_attr_e( 'PMI', 'real-estate-directory' ); ?></span>
+                                <span class="fw-bold"><i class="far fa-dot-circle me-1" style="color: #ffcd56;"></i> <?php  esc_attr_e( 'PMI', 'real-estate-directory' ); ?></span>
                                 <span class="ms-auto calc-pmi-value"></span>
                             </div>
                             <div class="list-group-item d-flex px-2">
-                                <span class="fw-bold"><i class="far fa-dot-circle me-1"
-                                                         style="color: #4bc0c0;"></i> <?php  esc_attr_e( 'Monthly HOA Fees', 'real-estate-directory' ); ?></span>
+                                <span class="fw-bold"><i class="far fa-dot-circle me-1" style="color: #4bc0c0;"></i> <?php  esc_attr_e( 'Monthly HOA Fees', 'real-estate-directory' ); ?></span>
                                 <span class="ms-auto calc-mhf-value"></span>
                             </div>
                         </div>
@@ -348,116 +335,81 @@ class GeoDir_Widget_Mortgage_Calculator extends WP_Super_Duper {
                     <input type="hidden" id="gmc_currency_code" value="<?php echo esc_attr( $currency_code ); ?>">
                     <div class="row">
                         <div class="col-lg-4 col-6 mb-3">
-                            <label for="loanAmount"
-                                   class="form-label fw-bold"><?php  esc_attr_e( 'Property Price', 'real-estate-directory' ); ?>
-                                <i
-                                        class="far fa-question-circle c-pointer text-muted" data-bs-toggle="tooltip"
-                                        data-bs-title="<?php  esc_attr_e( 'This is the price of the property, it does not include additional fees that may be due.', 'real-estate-directory' ); ?>"></i></label>
+                            <label for="loanAmount" class="form-label fw-bold"><?php  esc_attr_e( 'Property Price', 'real-estate-directory' ); ?>
+                                <i class="far fa-question-circle c-pointer text-muted" data-bs-toggle="tooltip" data-bs-title="<?php  esc_attr_e( 'This is the price of the property, it does not include additional fees that may be due.', 'real-estate-directory' ); ?>"></i></label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text text-muted"><?php echo esc_attr( $currency_symbol ); ?></span>
-                                <input type="number" class="form-control" id="gmc_loanAmount"
-                                       value="<?php echo absint( $price ); ?>" required>
+                                <input type="number" class="form-control" id="gmc_loanAmount" value="<?php echo absint( $price ); ?>" required>
                             </div>
                         </div>
                         <div class="col-lg-4 col-6 mb-3">
-                            <label for="downPayment"
-                                   class="form-label fw-bold"><?php  esc_attr_e( 'Down Payment', 'real-estate-directory' ); ?> <i
-                                        class="far fa-question-circle c-pointer text-muted" data-bs-toggle="tooltip"
-                                        data-bs-title="<?php  esc_attr_e( 'The amount of money you pay upfront towards the mortgage, the more you pay the less your monthly payments will be.', 'real-estate-directory' ); ?>"></i></label>
+                            <label for="downPayment" class="form-label fw-bold"><?php  esc_attr_e( 'Down Payment', 'real-estate-directory' ); ?> <i class="far fa-question-circle c-pointer text-muted" data-bs-toggle="tooltip" data-bs-title="<?php  esc_attr_e( 'The amount of money you pay upfront towards the mortgage, the more you pay the less your monthly payments will be.', 'real-estate-directory' ); ?>"></i></label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text text-muted">%</span>
-                                <input type="number" class="form-control" id="gmc_downPayment"
-                                       value="<?php echo esc_attr( (float) $down_payment ); ?>" required>
+                                <input type="number" class="form-control" id="gmc_downPayment" value="<?php echo esc_attr( (float) $down_payment ); ?>" required>
                             </div>
                         </div>
                         <div class="col-lg-4 col-6 mb-3">
-                            <label for="interestRate"
-                                   class="form-label fw-bold"><?php  esc_attr_e( 'Interest Rate', 'real-estate-directory' ); ?>
-                                <i
-                                        class="far fa-question-circle c-pointer text-muted" data-bs-toggle="tooltip"
-                                        data-bs-title="<?php  esc_attr_e( "This is the cost you pay to borrow money to buy a property It's a percentage of the loan amount. The lower the interest rate, the less you'll pay over the life of the loan.", 'real-estate-directory' ); ?>"></i></label>
+                            <label for="interestRate" class="form-label fw-bold"><?php  esc_attr_e( 'Interest Rate', 'real-estate-directory' ); ?>
+                                <i class="far fa-question-circle c-pointer text-muted" data-bs-toggle="tooltip" data-bs-title="<?php  esc_attr_e( "This is the cost you pay to borrow money to buy a property It's a percentage of the loan amount. The lower the interest rate, the less you'll pay over the life of the loan.", 'real-estate-directory' ); ?>"></i></label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text text-muted">%</span>
-                                <input type="number" class="form-control" id="gmc_interestRate"
-                                       value="<?php echo esc_attr( (float) $interest_rate ); ?>" required>
+                                <input type="number" class="form-control" id="gmc_interestRate" value="<?php echo esc_attr( (float) $interest_rate ); ?>" required>
                             </div>
                         </div>
                         <div class="col-lg-4 col-6 mb-3">
-                            <label for="loanTerm"
-                                   class="form-label fw-bold"><?php  esc_attr_e( 'Loan Term (Years)', 'real-estate-directory' ); ?>
-                                <i
-                                        class="far fa-question-circle c-pointer text-muted" data-bs-toggle="tooltip"
-                                        data-bs-title="<?php  esc_attr_e( 'This is how many years the loan lasts, typically the longer it lasts the lower the monthly repayments.', 'real-estate-directory' ); ?>"></i></label>
+                            <label for="loanTerm" class="form-label fw-bold"><?php  esc_attr_e( 'Loan Term (Years)', 'real-estate-directory' ); ?>
+                                <i class="far fa-question-circle c-pointer text-muted" data-bs-toggle="tooltip" data-bs-title="<?php  esc_attr_e( 'This is how many years the loan lasts, typically the longer it lasts the lower the monthly repayments.', 'real-estate-directory' ); ?>"></i></label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text text-muted"><i class="far fa-calendar-alt"></i></span>
-                                <input type="number" class="form-control" id="gmc_loanTerm"
-                                       value="<?php echo absint( $loan_term ); ?>" required>
+                                <input type="number" class="form-control" id="gmc_loanTerm" value="<?php echo absint( $loan_term ); ?>" required>
                             </div>
                         </div>
                         <div class="col-lg-4 col-6 mb-3">
-                            <label for="propertyTax"
-                                   class="form-label fw-bold"><?php  esc_attr_e( 'Property Tax', 'real-estate-directory' ); ?> <i
-                                        class="far fa-question-circle c-pointer text-muted" data-bs-toggle="tooltip"
-                                        data-bs-title="<?php  esc_attr_e( 'This is a monthly estimate of your property tax, it will be different in each location, its used to give you an idea of your total monthly payments.', 'real-estate-directory' ); ?>"></i></label>
+                            <label for="propertyTax" class="form-label fw-bold"><?php  esc_attr_e( 'Property Tax', 'real-estate-directory' ); ?> <i class="far fa-question-circle c-pointer text-muted" data-bs-toggle="tooltip" data-bs-title="<?php  esc_attr_e( 'This is a monthly estimate of your property tax, it will be different in each location, its used to give you an idea of your total monthly payments.', 'real-estate-directory' ); ?>"></i></label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text text-muted"><?php echo esc_attr( $currency_symbol ); ?></span>
-                                <input type="number" class="form-control" id="gmc_propertyTax"
-                                       value="<?php echo absint( $property_tax ); ?>" required>
+                                <input type="number" class="form-control" id="gmc_propertyTax" value="<?php echo absint( $property_tax ); ?>" required>
                             </div>
                         </div>
                         <div class="col-lg-4 col-6 mb-3">
-                            <label for="homeInsurance"
-                                   class="form-label fw-bold"><?php  esc_attr_e( 'Home Insurance', 'real-estate-directory' ); ?>
-                                <i
-                                        class="far fa-question-circle c-pointer text-muted" data-bs-toggle="tooltip"
-                                        data-bs-title="<?php  esc_attr_e( 'Insurance that covers loss or damage to the property. It is often a requirement from loan providers.', 'real-estate-directory' ); ?>"></i></label>
+                            <label for="homeInsurance" class="form-label fw-bold"><?php  esc_attr_e( 'Home Insurance', 'real-estate-directory' ); ?>
+                                <i class="far fa-question-circle c-pointer text-muted" data-bs-toggle="tooltip" data-bs-title="<?php  esc_attr_e( 'Insurance that covers loss or damage to the property. It is often a requirement from loan providers.', 'real-estate-directory' ); ?>"></i></label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text text-muted"><?php echo esc_attr( $currency_symbol ); ?></span>
-                                <input type="number" class="form-control" id="gmc_homeInsurance"
-                                       value="<?php echo absint( $home_insurance ); ?>" required>
+                                <input type="number" class="form-control" id="gmc_homeInsurance" value="<?php echo absint( $home_insurance ); ?>" required>
                             </div>
                         </div>
                         <div class="col-lg-4 col-6 mb-3">
                             <label for="pmi" class="form-label fw-bold"><?php  esc_attr_e( 'PMI', 'real-estate-directory' ); ?>
-                                <i
-                                        class="far fa-question-circle c-pointer text-muted" data-bs-toggle="tooltip"
-                                        data-bs-title="<?php  esc_attr_e( "Private Mortgage Insurance, is a type of insurance that homebuyers might need to pay if their down payment is less than 20% of the home's price. It protects the lender if the buyer can't pay the mortgage. It's usually a part of the monthly mortgage payment until the borrower has enough equity in the home.", 'real-estate-directory' ); ?>"></i></label>
+                                <i class="far fa-question-circle c-pointer text-muted" data-bs-toggle="tooltip" data-bs-title="<?php  esc_attr_e( "Private Mortgage Insurance, is a type of insurance that homebuyers might need to pay if their down payment is less than 20% of the home's price. It protects the lender if the buyer can't pay the mortgage. It's usually a part of the monthly mortgage payment until the borrower has enough equity in the home.", 'real-estate-directory' ); ?>"></i></label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text text-muted"><?php echo esc_attr( $currency_symbol ); ?></span>
-                                <input type="number" class="form-control" id="gmc_pmi"
-                                       value="<?php echo absint( $pmi ); ?>" required>
+                                <input type="number" class="form-control" id="gmc_pmi" value="<?php echo absint( $pmi ); ?>" required>
                             </div>
                         </div>
                         <div class="col-lg-4 col-6 mb-3">
-                            <label for="monthlyHOAFees"
-                                   class="form-label fw-bold"><?php  esc_attr_e( 'Monthly HOA Fees', 'real-estate-directory' ); ?>
-                                <i
-                                        class="far fa-question-circle c-pointer text-muted" data-bs-toggle="tooltip"
-                                        data-bs-title="<?php  esc_attr_e( 'Homeowners Association fees, are monthly or yearly charges paid by homeowners to a community organization. This money is used for maintaining and improving shared spaces.', 'real-estate-directory' ); ?>"></i></label>
+                            <label for="monthlyHOAFees" class="form-label fw-bold"><?php  esc_attr_e( 'Monthly HOA Fees', 'real-estate-directory' ); ?>
+                                <i class="far fa-question-circle c-pointer text-muted" data-bs-toggle="tooltip" data-bs-title="<?php  esc_attr_e( 'Homeowners Association fees, are monthly or yearly charges paid by homeowners to a community organization. This money is used for maintaining and improving shared spaces.', 'real-estate-directory' ); ?>"></i></label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text text-muted"><?php echo esc_attr( $currency_symbol ); ?></span>
-                                <input type="number" class="form-control" id="gmc_monthlyHOAFees"
-                                       value="<?php echo absint( $hoa_fees ); ?>" required>
+                                <input type="number" class="form-control" id="gmc_monthlyHOAFees" value="<?php echo absint( $hoa_fees ); ?>" required>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-
-
 		<?php
 
 		return ob_get_clean();
 	}
 
 	public function output_js( $instance, $args ) {
-
 		ob_start();
 		$currency_symbol = '$';
 		?>
         <script>
-
             // Create our number formatter.
             const gdmc_formatter = new Intl.NumberFormat('en-US', {
                 style: 'currency',
@@ -549,6 +501,5 @@ class GeoDir_Widget_Mortgage_Calculator extends WP_Super_Duper {
 
 		return str_replace( array( '<script>', '</script>' ), '', ob_get_clean() );
 	}
-
 
 }
