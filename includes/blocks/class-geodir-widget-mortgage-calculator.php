@@ -3,7 +3,7 @@
  * Mortgage Calculator
  *
  * @author    AyeCode Ltd
- * @package   GeoDir_Real_Estate
+ * @package   Real_Estate_Directory
  * @version   1.0
  */
 
@@ -43,11 +43,11 @@ class GeoDir_Widget_Mortgage_Calculator extends WP_Super_Duper {
 			'block_group_tabs' => array(
 				'content'  => array(
 					'groups' => array(
-						__( 'Defaults', 'geodirectory' ),
+						__( 'Defaults', 'real-estate-directory' ),
 //						__( 'Button Content', 'real-estate-directory' )
 					),
 					'tab'    => array(
-						'title'     => __( 'Content', 'geodirectory' ),
+						'title'     => __( 'Content', 'real-estate-directory' ),
 						'key'       => 'bs_tab_content',
 						'tabs_open' => true,
 						'open'      => true,
@@ -276,9 +276,9 @@ class GeoDir_Widget_Mortgage_Calculator extends WP_Super_Duper {
 		$hoa_fees        = ! empty( $instance['hoa_fees'] ) ? absint( $instance['hoa_fees'] ) : 220;
 
 
-		wp_enqueue_script( 'geodir-chartjs', plugin_dir_url( GEODIR_REAL_ESTATE_PLUGIN_FILE ) . 'assets/js/chart.min.js', array(), '4.3', true );
+		wp_enqueue_script( 'redir-chartjs', plugin_dir_url( REAL_ESTATE_DIRECTORY_PLUGIN_FILE ) . 'assets/js/chart.min.js', array(), '4.3', true );
 
-		wp_add_inline_script( 'geodir-chartjs', $this->output_js( $instance, $args ) );
+		wp_add_inline_script( 'redir-chartjs', $this->output_js( $instance, $args ) );
 
 		$wrap_class = sd_build_aui_class( $instance );
 

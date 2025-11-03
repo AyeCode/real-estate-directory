@@ -3,7 +3,7 @@
  * Walk Score
  *
  * @author    AyeCode Ltd
- * @package   GeoDir_Real_Estate
+ * @package   Real_Estate_Directory
  * @version   1.0
  */
 
@@ -43,11 +43,11 @@ class GeoDir_Widget_Walk_Score extends WP_Super_Duper {
 			'block_group_tabs' => array(
 				'content'  => array(
 					'groups' => array(
-						__( 'Defaults', 'geodirectory' ),
+						__( 'Defaults', 'real-estate-directory' ),
 //						__( 'Button Content', 'real-estate-directory' )
 					),
 					'tab'    => array(
-						'title'     => __( 'Content', 'geodirectory' ),
+						'title'     => __( 'Content', 'real-estate-directory' ),
 						'key'       => 'bs_tab_content',
 						'tabs_open' => true,
 						'open'      => true,
@@ -111,31 +111,31 @@ class GeoDir_Widget_Walk_Score extends WP_Super_Duper {
 
 		$arguments['format'] = array(
 			'type'     => 'select',
-			'title'    => __( 'Format', 'blockstrap-page-builder-blocks' ),
+			'title'    => __( 'Format', 'real-estate-directory'  ),
 			'options'  => array(
-				''       => __( 'Wide', 'blockstrap-page-builder-blocks' ),
-				'tall'   => __( 'Tall', 'blockstrap-page-builder-blocks' ),
-				'square' => __( 'Square', 'blockstrap-page-builder-blocks' ),
+				''       => __( 'Wide', 'real-estate-directory'  ),
+				'tall'   => __( 'Tall', 'real-estate-directory'  ),
+				'square' => __( 'Square', 'real-estate-directory'  ),
 			),
 			'default'  => '',
 			'desc_tip' => true,
-			'group'    => __( 'Defaults', 'blockstrap-page-builder-blocks' ),
+			'group'    => __( 'Defaults', 'real-estate-directory'  ),
 		);
 
 		$arguments['size'] = array(
 			'type'     => 'select',
-			'title'    => __( 'Size', 'blockstrap-page-builder-blocks' ),
+			'title'    => __( 'Size', 'real-estate-directory'  ),
 			'options'  => array(
-				''       => __( 'Large (width 100%)', 'blockstrap-page-builder-blocks' ),
-				'large'  => __( 'Large', 'blockstrap-page-builder-blocks' ),
-				'medium' => __( 'Medium', 'blockstrap-page-builder-blocks' ),
-				'small'  => __( 'Small', 'blockstrap-page-builder-blocks' ),
-				'tiny'   => __( 'Tiny', 'blockstrap-page-builder-blocks' ),
-				'custom' => __( 'custom', 'blockstrap-page-builder-blocks' ),
+				''       => __( 'Large (width 100%)', 'real-estate-directory'  ),
+				'large'  => __( 'Large', 'real-estate-directory'  ),
+				'medium' => __( 'Medium', 'real-estate-directory'  ),
+				'small'  => __( 'Small', 'real-estate-directory'  ),
+				'tiny'   => __( 'Tiny', 'real-estate-directory'  ),
+				'custom' => __( 'custom', 'real-estate-directory'  ),
 			),
 			'default'  => '',
 			'desc_tip' => true,
-			'group'    => __( 'Defaults', 'blockstrap-page-builder-blocks' ),
+			'group'    => __( 'Defaults', 'real-estate-directory'  ),
 		);
 
 		$arguments['size_height'] = array(
@@ -224,31 +224,24 @@ class GeoDir_Widget_Walk_Score extends WP_Super_Duper {
 	 */
 	public function output( $instance = array(), $args = array(), $content = '' ) {
 
-		wp_enqueue_script( 'geodir-walk-score-js', plugin_dir_url( GEODIR_REAL_ESTATE_PLUGIN_FILE ) . 'assets/js/walk-score.min.js', array(), GEODIR_REAL_ESTATE_VERSION, true );
+		wp_enqueue_script( 'redir-walk-score-js', plugin_dir_url( REAL_ESTATE_DIRECTORY_PLUGIN_FILE ) . 'assets/js/walk-score.min.js', array(), REAL_ESTATE_DIRECTORY_VERSION, true );
 
-		wp_add_inline_script( 'geodir-walk-score-js', $this->output_js( $instance, $args ), 'before' );
+		wp_add_inline_script( 'redir-walk-score-js', $this->output_js( $instance, $args ), 'before' );
 
 		$wrap_class = sd_build_aui_class( $instance );
 
 		$styles = sd_build_aui_styles( $instance );
 		$style  = $styles ? ' style="' . $styles . '"' : '';
 
-		// JS for block preview, we ahve to be creative as "<script>" is not called here
-		$js_for_preview = $this->is_preview() ? $this->output_js( $instance, $args ) : '';
-		if ( $js_for_preview ) {
-			$js_for_preview = str_replace( array( "var ", "\r", "\n" ), '', $js_for_preview );
-			$js_for_preview .= "var script = document.createElement('script');script.src = '" . plugin_dir_url( GEODIR_REAL_ESTATE_PLUGIN_FILE ) . 'assets/js/walk-score.js' . "';document.head.appendChild(script);";
-		}
-		$css_for_preview = $this->is_preview() ? '#ws-walkscore-tile{ pointer-events: none; }' : '';
 
+		$css_for_preview = $this->is_preview() ? '#ws-walkscore-tile{ pointer-events: none; }' : '';
 		ob_start();
 		?>
         <div class="<?php echo esc_attr( $wrap_class ); ?>" <?php echo esc_attr( $style ); ?>>
             <div id='ws-walkscore-tile'></div>
         </div>
         <style onload="<?php
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-        echo $js_for_preview;
+		echo $this->output_js( $instance, $args );  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --  This is used in multiple contexts and requires manipulation between contexts, it is full escaped in function.
         ?>">#ws-walkscore-tile {
                 position: relative;
                 text-align: left
@@ -257,8 +250,7 @@ class GeoDir_Widget_Walk_Score extends WP_Super_Duper {
             #ws-walkscore-tile * {
                 float: none;
             }<?php
-	        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-            echo $css_for_preview;
+            echo esc_attr( $css_for_preview );
             ?></style>
 		<?php
 
@@ -341,16 +333,24 @@ class GeoDir_Widget_Walk_Score extends WP_Super_Duper {
 		ob_start();
 		?>
         <script>
-            var ws_wsid = '<?php echo esc_attr( $wsid ); ?>';
-            var ws_address = '<?php echo esc_attr( $address ); ?>';
-            var ws_format = '<?php echo esc_attr( $format ); ?>';
-            var ws_width = '<?php echo esc_attr( $width ); ?>';
-            var ws_height = '<?php echo esc_attr( $height ); ?>';
+            var ws_wsid = '<?php echo esc_js( $wsid ); ?>';
+            var ws_address = '<?php echo esc_js( $address ); ?>';
+            var ws_format = '<?php echo esc_js( $format ); ?>';
+            var ws_width = '<?php echo esc_js( $width ); ?>';
+            var ws_height = '<?php echo esc_js( $height ); ?>';
         </script>
 
 		<?php
 
-		return str_replace( array( '<script>', '</script>' ), '', ob_get_clean() );
+		$js = ob_get_clean();
+
+		// JS for block preview, we have to be creative as "<script>" is not called here
+		if ($this->is_preview()) {
+			$js = str_replace( array( "var ", "\r", "\n" ), '', $js );
+			$js .= "var script = document.createElement('script');script.src = '" . esc_url( plugin_dir_url( REAL_ESTATE_DIRECTORY_PLUGIN_FILE ) ) . 'assets/js/walk-score.js' . "';document.head.appendChild(script);";
+		}
+
+		return str_replace( array( '<script>', '</script>' ), '', $js );
 	}
 
 

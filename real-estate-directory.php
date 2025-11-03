@@ -1,8 +1,8 @@
 <?php
 /**
- * GeoDirectory Real Estate
+ * GeoDirectory Real Estate Directory
  *
- * @package           GeoDir_Real_Estate
+ * @package           Real_Estate_Directory
  * @author            AyeCode Ltd
  * @copyright         2023 AyeCode Ltd
  * @license           GPLv3
@@ -11,18 +11,16 @@
  * Plugin Name:       Real Estate Directory
  * Plugin URI:        https://wpgeodirectory.com/
  * Description:       Add real estate functionality to your site.
- * Version:           2.0.1
+ * Version:           2.0.6
  * Requires at least: 6.0
  * Requires PHP:      7.0
  * Author:            AyeCode Ltd
  * Author URI:        https://ayecode.io
  * License:           GPLv3
  * License URI:       http://www.gnu.org/licenses/gpl-3.0.html
- * Requires Plugin:   geodirectory, blockstrap-page-builder-blocks, usserwp
+ * Requires Plugins:  geodirectory
  * Text Domain:       real-estate-directory
  * Domain Path:       /languages
- * Update URL:        https://github.com/AyeCode/real-estate-directory/
- * Update ID:         4055647
  */
 
 // If this file is called directly, abort.
@@ -30,12 +28,12 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-if ( ! defined( 'GEODIR_REAL_ESTATE_VERSION' ) ) {
-	define( 'GEODIR_REAL_ESTATE_VERSION', '2.0.1' );
+if ( ! defined( 'REAL_ESTATE_DIRECTORY_VERSION' ) ) {
+	define( 'REAL_ESTATE_DIRECTORY_VERSION', '2.0.6' );
 }
 
-if ( ! defined( 'GEODIR_REAL_ESTATE_MIN_CORE' ) ) {
-	define( 'GEODIR_REAL_ESTATE_MIN_CORE', '2.3' );
+if ( ! defined( 'REAL_ESTATE_DIRECTORY_MIN_CORE' ) ) {
+	define( 'REAL_ESTATE_DIRECTORY_MIN_CORE', '2.3' );
 }
 
 /**
@@ -47,10 +45,10 @@ if ( ! defined( 'GEODIR_REAL_ESTATE_MIN_CORE' ) ) {
  *
  * @since 2.0
  */
-function geodir_load_real_estate() {
+function real_estate_directory_load() {
 
-	if ( ! defined( 'GEODIR_REAL_ESTATE_PLUGIN_FILE' ) ) {
-		define( 'GEODIR_REAL_ESTATE_PLUGIN_FILE', __FILE__ );
+	if ( ! defined( 'REAL_ESTATE_DIRECTORY_PLUGIN_FILE' ) ) {
+		define( 'REAL_ESTATE_DIRECTORY_PLUGIN_FILE', __FILE__ );
 	}
 
 	// Min core version check
@@ -62,30 +60,9 @@ function geodir_load_real_estate() {
 	 * The core plugin class that is used to define internationalization,
 	 * dashboard-specific hooks, and public-facing site hooks.
 	 */
-	require_once( plugin_dir_path( GEODIR_REAL_ESTATE_PLUGIN_FILE ) . 'includes/class-real-estate-directory.php' );
+	require_once( plugin_dir_path( REAL_ESTATE_DIRECTORY_PLUGIN_FILE ) . 'includes/class-real-estate-directory.php' );
 
-	return GeoDir_Real_Estate::instance();
+	return Real_Estate_Directory::instance();
 }
-//add_action( 'geodirectory_loaded', 'geodir_load_real_estate' );
-add_action( 'plugins_loaded', 'geodir_load_real_estate' );
+add_action( 'plugins_loaded', 'real_estate_directory_load' );
 
-/**
- * Checks and loads the real estate directory requirements.
- *
- * @return void
- */
-function real_estate_directory_requirements(){
-
-	if ( ! defined( 'GEODIR_REAL_ESTATE_PLUGIN_FILE' ) ) {
-		define( 'GEODIR_REAL_ESTATE_PLUGIN_FILE', __FILE__ );
-	}
-
-	if ( is_admin() ) {
-		/**
-		 * Load the class for requirements
-		 */
-		require_once( plugin_dir_path( GEODIR_REAL_ESTATE_PLUGIN_FILE ) . 'includes/class-real-estate-directory-requirements.php' );
-		GeoDir_Real_Estate_Requirements::instance();
-	}
-}
-add_action('plugins_loaded','real_estate_directory_requirements');

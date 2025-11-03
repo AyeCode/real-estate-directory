@@ -3,7 +3,7 @@
  * Real Estate main class
  *
  * @author    AyeCode Ltd
- * @package   GeoDir_Real_Estate
+ * @package   Real_Estate_Directory
  * @version   1.0
  */
 
@@ -12,9 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * GeoDir_Real_Estate class.
+ * Real_Estate_Directory class.
  */
-final class GeoDir_Real_Estate {
+final class Real_Estate_Directory {
 	/**
 	 * The single instance of the class.
 	 *
@@ -27,11 +27,11 @@ final class GeoDir_Real_Estate {
 	 *
 	 * @since 2.0
 	 *
-	 * @return GeoDir_Real_Estate instance.
+	 * @return Real_Estate_Directory instance.
 	 */
 	public static function instance() {
-		if ( ! isset( self::$instance ) && ! ( self::$instance instanceof GeoDir_Real_Estate ) ) {
-			self::$instance = new GeoDir_Real_Estate;
+		if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Real_Estate_Directory ) ) {
+			self::$instance = new Real_Estate_Directory;
 			//self::$instance->setup_constants();
 
 			add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
@@ -51,7 +51,7 @@ final class GeoDir_Real_Estate {
 			self::$instance->includes();
 			self::$instance->init_hooks();
 
-			do_action( 'geodir_real_estate_loaded' );
+			do_action( 'real_estate_directory_loaded' );
 		}
 
 		return self::$instance;
@@ -64,9 +64,9 @@ final class GeoDir_Real_Estate {
 	 */
 	public function includes(){
 		// blocks
-		require_once( plugin_dir_path( GEODIR_REAL_ESTATE_PLUGIN_FILE ) . 'includes/blocks/class-geodir-widget-mortgage-calculator.php' );
-		require_once( plugin_dir_path( GEODIR_REAL_ESTATE_PLUGIN_FILE ) . 'includes/blocks/class-geodir-widget-energy-rating.php' );
-		require_once( plugin_dir_path( GEODIR_REAL_ESTATE_PLUGIN_FILE ) . 'includes/blocks/class-geodir-widget-walk-score.php' );
+		require_once(plugin_dir_path(REAL_ESTATE_DIRECTORY_PLUGIN_FILE) . 'includes/blocks/class-geodir-widget-mortgage-calculator.php');
+		require_once(plugin_dir_path(REAL_ESTATE_DIRECTORY_PLUGIN_FILE) . 'includes/blocks/class-geodir-widget-energy-rating.php');
+		require_once(plugin_dir_path(REAL_ESTATE_DIRECTORY_PLUGIN_FILE) . 'includes/blocks/class-geodir-widget-walk-score.php');
 	}
 
 
@@ -139,9 +139,9 @@ final class GeoDir_Real_Estate {
 					'post_type'      => $post_type,
 					'data_type'      => 'TEXT',
 					'field_type'     => 'textarea',
-					'admin_title'    => __( 'Virtual Tour', 'geodirectory' ),
-					'frontend_desc'  => __( 'Add matterport.com or similar embed URL for 360 tours.', 'geodirectory' ),
-					'frontend_title' => __( 'Virtual Tour', 'geodirectory' ),
+					'admin_title'    => esc_attr__( 'Virtual Tour', 'real-estate-directory' ),
+					'frontend_desc'  => esc_attr__( 'Add matterport.com or similar embed URL for 360 tours.', 'real-estate-directory' ),
+					'frontend_title' => esc_attr__( 'Virtual Tour', 'real-estate-directory' ),
 					'htmlvar_name'   => 'virtual_tour',
 					'default_value'  => '',
 					'is_active'      => '1',
@@ -149,7 +149,7 @@ final class GeoDir_Real_Estate {
 					'is_default'     => '0',
 					'show_in'        => '[owntab]',
 					'show_on_pkg'    => $package,
-					'clabels'        => __( 'Virtual Tour', 'geodirectory' ),
+					'clabels'        => esc_attr__( 'Virtual Tour', 'real-estate-directory' ),
 					'extra'       => array(
 						'embed' => 1
 					)
@@ -176,13 +176,13 @@ final class GeoDir_Real_Estate {
 			'field_type'  => 'textarea',
 			'class'       => 'gd-virtual-tour',
 			'icon'        => 'fas fa-globe',
-			'name'        => __( 'Virtual Tour', 'geodirectory' ),
-			'description' => __( 'Adds a matterport.com or similar 360 tour embed code input.', 'geodirectory' ),
+			'name'        => esc_attr__( 'Virtual Tour', 'real-estate-directory' ),
+			'description' => esc_attr__( 'Adds a matterport.com or similar 360 tour embed code input.', 'real-estate-directory' ),
 			'defaults'    => array(
 				'data_type'          => 'TEXT',
 				'admin_title'        => 'Virtual Tour',
 				'frontend_title'     => 'Virtual Tour',
-				'frontend_desc'      => 'Add matterport.com or similar embed code for 360 tours',
+				'frontend_desc'      => esc_attr__( 'Add matterport.com or similar embed code for 360 tours', 'real-estate-directory' ),
 				'htmlvar_name'       => 'virtual_tour',
 				'is_active'          => true,
 				'for_admin_use'      => false,
@@ -208,13 +208,13 @@ final class GeoDir_Real_Estate {
 			'field_type'  => 'text',
 			'class'       => 'gd-energy-rating',
 			'icon'        => 'fas fa-chart-bar',
-			'name'        => __( 'Property Energy Rating', 'geodirectory' ),
-			'description' => __( 'Adds a input for a property energy rating. Use the GD > Energy Rating Chart block for output.', 'geodirectory' ),
+			'name'        => esc_attr__( 'Property Energy Rating', 'real-estate-directory' ),
+			'description' => esc_attr__( 'Adds a input for a property energy rating. Use the GD > Energy Rating Chart block for output.', 'real-estate-directory' ),
 			'defaults'    => array(
 				'data_type'          => 'INT',
-				'admin_title'        => 'Property Energy Rating',
-				'frontend_title'         => 'Property Energy Rating',
-				'frontend_desc'         => 'Enter the energy rating score',
+				'admin_title'        => esc_attr__( 'Property Energy Rating', 'real-estate-directory' ),
+				'frontend_title'     => esc_attr__( 'Property Energy Rating', 'real-estate-directory' ),
+				'frontend_desc'      => esc_attr__( 'Enter the energy rating score', 'real-estate-directory' ),
 				'htmlvar_name'       => 'energy_rating',
 				'is_active'          => true,
 				'for_admin_use'      => false,
@@ -254,7 +254,7 @@ final class GeoDir_Real_Estate {
 
 		unload_textdomain( 'real-estate-directory' );
 		load_textdomain( 'real-estate-directory', WP_LANG_DIR . '/real-estate-directory/real-estate-directory-' . $locale . '.mo' );
-		load_plugin_textdomain( 'real-estate-directory', false, basename( dirname( GEODIR_REAL_ESTATE_PLUGIN_FILE ) ) . '/languages/' );
+		load_plugin_textdomain( 'real-estate-directory', false, basename( dirname( REAL_ESTATE_DIRECTORY_PLUGIN_FILE ) ) . '/languages/' );
 	}
 
 	/**

@@ -3,7 +3,7 @@
  * EPC Rating Chart
  *
  * @author    AyeCode Ltd
- * @package   GeoDir_Real_Estate
+ * @package   Real_Estate_Directory
  * @version   1.0
  */
 
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * GeoDir_Widget_EPC_Rating class.
+ * GeoDir_Widget_Energy_Rating class.
  */
 class GeoDir_Widget_Energy_Rating extends WP_Super_Duper {
 
@@ -53,7 +53,7 @@ class GeoDir_Widget_Energy_Rating extends WP_Super_Duper {
 
 		$arguments['type'] = array(
 			'type'     => 'select',
-			'title'    => __( 'Rating Type', 'blockstrap-page-builder-blocks' ),
+			'title'    => __( 'Rating Type', 'real-estate-directory'  ),
 			'options'  => array(
 				''     => __( 'Auto (use listing location)', 'real-estate-directory' ),
 				'epc'  => __( 'EPC Rating (European Union / UK)', 'real-estate-directory' ),
@@ -61,7 +61,7 @@ class GeoDir_Widget_Energy_Rating extends WP_Super_Duper {
 			),
 			'default'  => '',
 			'desc_tip' => true,
-			'group'    => __( 'Defaults', 'blockstrap-page-builder-blocks' ),
+			'group'    => __( 'Defaults', 'real-estate-directory'  ),
 		);
 
 		$arguments['epc_rating'] = array(
