@@ -35,7 +35,7 @@ class GeoDir_Widget_Energy_Rating extends WP_Super_Duper {
 			),
 			'block-keywords' => "['geodir','epc','rating']",
 			'widget_ops'     => array(
-				'classname'                   => 'geodir-epc-rating-container' . ( geodir_design_style() ? ' bsui' : '' ),
+				'classname'                   => 'geodir-epc-rating-container ' . geodir_bsui_class(),
 				'description'                 => esc_html__( 'Adds an EPC rating chart for real estate.', 'real-estate-directory' ),
 				'customize_selective_refresh' => true,
 				'geodirectory'                => true,
@@ -112,7 +112,6 @@ class GeoDir_Widget_Energy_Rating extends WP_Super_Duper {
 
 		$type = ! empty( $instance['type'] ) ? esc_attr( $instance['type'] ) : 'auto';
 
-
 		if ( 'epc' === $type ) {
 			return $this->output_epc( $epc_rating );
 		} elseif ( 'hers' === $type ) {
@@ -124,8 +123,6 @@ class GeoDir_Widget_Energy_Rating extends WP_Super_Duper {
 				return $this->output_epc( $epc_rating );
 			}
 		}
-
-
 	}
 
 	public function output_epc( $epc_rating ) {
@@ -144,18 +141,14 @@ class GeoDir_Widget_Energy_Rating extends WP_Super_Duper {
 		$marker_left = $this->sapPointToPercentage( $epc_rating ) . '%';
 
 		$output = '<div class="position-relative z-index-1">';
-		$output .= '<div id="marker" class="position-absolute top-50 translate-middle-y rounded" style="right: ' . $marker_left . ';    background: #000000a3;
-    width: 10px;
-    height: 45px;
-    top: 15px !important;    margin-right: -10px;"></div>';
+		$output .= '<div id="marker" class="position-absolute top-50 translate-middle-y rounded" style="right:' . esc_attr( $marker_left ) . ';background:#000000a3;width:10px;height:45px;top:15px!important;margin-right:-10px;"></div>';
 		$output .= '</div>';
 
 		$output .= '<div class="progress position-relative" style="height: 30px;">';
 
 		foreach ( $rating_categories as $category => $data ) {
-			$output .= '<div class="progress-bar" role="progressbar" style="width: ' . $data['width'] . ';background:' . $data['color'] . ' !important;" aria-valuenow="' . intval( $data['width'] ) . '" aria-valuemin="0" aria-valuemax="100">' . $category . '</div>';
+			$output .= '<div class="progress-bar" role="progressbar" style="width: ' . esc_attr( $data['width'] ) . ';background:' . esc_attr( $data['color'] ) . ' !important;" aria-valuenow="' . intval( $data['width'] ) . '" aria-valuemin="0" aria-valuemax="100">' . esc_html( $category ) . '</div>';
 		}
-
 
 		$output .= '</div>';
 
@@ -212,7 +205,6 @@ class GeoDir_Widget_Energy_Rating extends WP_Super_Duper {
 	 * @return string The HTML output of the HERS Rating Chart.
 	 */
 	public function output_hers( $rating ) {
-
 		// The marker's left position will be the EPC rating
 		$marker_left = round( $rating / 150 * 100, 5 ) . '%';
 
@@ -221,12 +213,7 @@ class GeoDir_Widget_Energy_Rating extends WP_Super_Duper {
 
 		$output = '<div class="position-relative z-index-1">';
 
-		$output .= '<div id="marker" class="c-pointer position-absolute top-50 translate-middle-y rounded" style="left: ' . $marker_left . ';    background: #000000a3;
-    width: 10px;
-    height: 45px;
-    top: 15px !important;    margin-left: -3px;"
-    data-bs-toggle="tooltip" data-bs-placement="top"
-        data-bs-title="' . $title . '"></div>';
+		$output .= '<div id="marker" class="c-pointer position-absolute top-50 translate-middle-y rounded" style="left:' . esc_attr( $marker_left ) . ';background:#000000a3;width:10px;height:45px;top:15px!important;margin-left:-3px;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="' . $title . '"></div>';
 		$output .= '</div>';
 
 		$common_css = 'margin-left:-7px;padding-bottom:4px;';
@@ -253,7 +240,6 @@ class GeoDir_Widget_Energy_Rating extends WP_Super_Duper {
 		$output     .= '</div>';
 		$output     .= '</div>';
 		$output     .= '</div>';
-
 
 		return $output;
 	}

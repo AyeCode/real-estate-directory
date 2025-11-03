@@ -3,9 +3,9 @@ Contributors: stiofansisland, paoltaia, ayecode
 Donate link: https://wpgeodirectory.com
 Tags: geodirectory, property, real estate, rental, for sale
 Requires at least: 6.0
-Tested up to: 6.5
+Tested up to: 6.8
 Requires PHP: 7.0
-Stable tag: 2.0.6
+Stable tag: 2.0.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,6 +45,9 @@ The manual installation method involves:
 Automatic updates should work seamlessly. To avoid unforeseen problems, we always suggest backing up your website before performing any automated update.
 
 == Changelog =
+
+= 2.0.7 - 2025-11-03 =
+* WordPress 6.8.3 compatibility check - COMPATIBILITY
 
 = 2.0.6 =
 * First release on wp.org - YAY

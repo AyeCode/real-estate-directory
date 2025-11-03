@@ -35,7 +35,7 @@ class GeoDir_Widget_Walk_Score extends WP_Super_Duper {
 			),
 			'block-keywords'   => "['geodir','walk','score','walkscore']",
 			'widget_ops'       => array(
-				'classname'                   => 'geodir-walk-score-container' . ( geodir_design_style() ? ' bsui' : '' ),
+				'classname'                   => 'geodir-walk-score-container ' . geodir_bsui_class(),
 				'description'                 => esc_html__( 'Adds a Walk Score widget that can be used on the listings details page.', 'real-estate-directory' ),
 				'customize_selective_refresh' => true,
 				'geodirectory'                => true,
@@ -223,7 +223,6 @@ class GeoDir_Widget_Walk_Score extends WP_Super_Duper {
 	 * @return mixed|string|void
 	 */
 	public function output( $instance = array(), $args = array(), $content = '' ) {
-
 		wp_enqueue_script( 'redir-walk-score-js', plugin_dir_url( REAL_ESTATE_DIRECTORY_PLUGIN_FILE ) . 'assets/js/walk-score.min.js', array(), REAL_ESTATE_DIRECTORY_VERSION, true );
 
 		wp_add_inline_script( 'redir-walk-score-js', $this->output_js( $instance, $args ), 'before' );
@@ -339,7 +338,6 @@ class GeoDir_Widget_Walk_Score extends WP_Super_Duper {
             var ws_width = '<?php echo esc_js( $width ); ?>';
             var ws_height = '<?php echo esc_js( $height ); ?>';
         </script>
-
 		<?php
 
 		$js = ob_get_clean();

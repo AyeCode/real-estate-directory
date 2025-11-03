@@ -1,12 +1,12 @@
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Real Estate Directory 2.0.7\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-11-03 18:37+0530\n"
-"PO-Revision-Date: 2025-11-03 18:37+0530\n"
-"Last-Translator: \n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
-"Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16,8 +16,8 @@ msgstr ""
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;gettext;"
 "gettext_noop\n"
 "X-Poedit-Basepath: ..\n"
-"X-Poedit-SourceCharset: UTF-8\n"
 "X-Generator: Poedit 3.5\n"
+"X-Loco-Version: 2.3.1; wp-5.3.2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: assets\n"
 
@@ -237,9 +237,9 @@ msgstr ""
 
 #: includes/blocks/class-geodir-widget-mortgage-calculator.php:354
 msgid ""
-"This is the cost you pay to borrow money to buy a property It's a percentage "
-"of the loan amount. The lower the interest rate, the less you'll pay over "
-"the life of the loan."
+"This is the cost you pay to borrow money to buy a property It's a "
+"percentage of the loan amount. The lower the interest rate, the less you'll "
+"pay over the life of the loan."
 msgstr ""
 
 #: includes/blocks/class-geodir-widget-mortgage-calculator.php:361
@@ -269,9 +269,9 @@ msgstr ""
 msgid ""
 "Private Mortgage Insurance, is a type of insurance that homebuyers might "
 "need to pay if their down payment is less than 20% of the home's price. It "
-"protects the lender if the buyer can't pay the mortgage. It's usually a part "
-"of the monthly mortgage payment until the borrower has enough equity in the "
-"home."
+"protects the lender if the buyer can't pay the mortgage. It's usually a "
+"part of the monthly mortgage payment until the borrower has enough equity "
+"in the home."
 msgstr ""
 
 #: includes/blocks/class-geodir-widget-mortgage-calculator.php:393
@@ -286,7 +286,8 @@ msgid "GD > Walk Score"
 msgstr ""
 
 #: includes/blocks/class-geodir-widget-walk-score.php:39
-msgid "Adds a Walk Score widget that can be used on the listings details page."
+msgid ""
+"Adds a Walk Score widget that can be used on the listings details page."
 msgstr ""
 
 #: includes/blocks/class-geodir-widget-walk-score.php:96
@@ -390,8 +391,8 @@ msgstr ""
 
 #: includes/class-real-estate-directory.php:251
 msgid ""
-"GeoDirectory plugin is required for the Real Estate Directory plugin to work "
-"properly."
+"GeoDirectory plugin is required for the Real Estate Directory plugin to "
+"work properly."
 msgstr ""
 
 #: includes/class-real-estate-directory.php:264
