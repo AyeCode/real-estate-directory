@@ -143,12 +143,22 @@ class GeoDir_Widget_Energy_Rating extends WP_Super_Duper {
 			$type = 'epc';
 		}
 
+		$block_preview = $this->is_block_content_call();
+
 		if ( $type == 'dpe' ) {
 			// DPE Energy
 			$rating = ! empty( $instance['dpe_value'] ) ? absint( $instance['dpe_value'] ) : 0;
 
 			if ( empty( $rating ) ) {
-				$rating = isset( $gd_post->energy_rating ) ? absint( $gd_post->energy_rating ) : 210;
+				if ( isset( $gd_post->energy_rating ) ) {
+					$rating = absint( $gd_post->energy_rating );
+				} else {
+					if ( ! $block_preview ) {
+						return;
+					}
+
+					$rating = 210;
+				}
 			}
 
 			return $this->output_dpe( $rating );
@@ -157,7 +167,15 @@ class GeoDir_Widget_Energy_Rating extends WP_Super_Duper {
 			$rating = ! empty( $instance['dpe_c_value'] ) ? absint( $instance['dpe_c_value'] ) : 0;
 
 			if ( empty( $rating ) ) {
-				$rating = isset( $gd_post->energy_rating ) ? absint( $gd_post->energy_rating ) : 50;
+				if ( isset( $gd_post->energy_rating ) ) {
+					$rating = absint( $gd_post->energy_rating );
+				} else {
+					if ( ! $block_preview ) {
+						return;
+					}
+
+					$rating = 50;
+				}
 			}
 
 			return $this->output_dpe_climate( $rating );
@@ -166,7 +184,15 @@ class GeoDir_Widget_Energy_Rating extends WP_Super_Duper {
 			$rating = ! empty( $instance['hers_rating'] ) ? absint( $instance['hers_rating'] ) : 0;
 
 			if ( empty( $rating ) ) {
-				$rating = isset( $gd_post->energy_rating ) ? absint( $gd_post->energy_rating ) : 100;
+				if ( isset( $gd_post->energy_rating ) ) {
+					$rating = absint( $gd_post->energy_rating );
+				} else {
+					if ( ! $block_preview ) {
+						return;
+					}
+
+					$rating = 100;
+				}
 			}
 
 			return $this->output_hers( $rating );
@@ -175,7 +201,15 @@ class GeoDir_Widget_Energy_Rating extends WP_Super_Duper {
 			$rating = ! empty( $instance['epc_rating'] ) ? absint( $instance['epc_rating'] ) : 0;
 
 			if ( empty( $rating ) ) {
-				$rating = isset( $gd_post->energy_rating ) ? absint( $gd_post->energy_rating ) : 50;
+				if ( isset( $gd_post->energy_rating ) ) {
+					$rating = absint( $gd_post->energy_rating );
+				} else {
+					if ( ! $block_preview ) {
+						return;
+					}
+
+					$rating = 50;
+				}
 			}
 
 			return $this->output_epc( $rating );

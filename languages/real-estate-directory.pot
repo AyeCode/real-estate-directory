@@ -1,9 +1,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Real Estate Directory 2.0.9\n"
+"Project-Id-Version: Real Estate Directory 2.0.10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-04 19:04+0530\n"
+"POT-Creation-Date: 2025-12-25 19:53+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
@@ -45,9 +45,19 @@ msgstr ""
 msgid "HERS (United States)"
 msgstr ""
 
-#: includes/blocks/class-geodir-widget-energy-rating.php:64
-#: includes/blocks/class-geodir-widget-energy-rating.php:74
-#: includes/blocks/class-geodir-widget-energy-rating.php:85
+#: includes/blocks/class-geodir-widget-energy-rating.php:61
+msgid "DPE Energy (France)"
+msgstr ""
+
+#: includes/blocks/class-geodir-widget-energy-rating.php:62
+msgid "DPE Climate (France)"
+msgstr ""
+
+#: includes/blocks/class-geodir-widget-energy-rating.php:66
+#: includes/blocks/class-geodir-widget-energy-rating.php:76
+#: includes/blocks/class-geodir-widget-energy-rating.php:87
+#: includes/blocks/class-geodir-widget-energy-rating.php:98
+#: includes/blocks/class-geodir-widget-energy-rating.php:109
 #: includes/blocks/class-geodir-widget-mortgage-calculator.php:46
 #: includes/blocks/class-geodir-widget-mortgage-calculator.php:101
 #: includes/blocks/class-geodir-widget-mortgage-calculator.php:111
@@ -69,29 +79,67 @@ msgstr ""
 msgid "Defaults"
 msgstr ""
 
-#: includes/blocks/class-geodir-widget-energy-rating.php:69
+#: includes/blocks/class-geodir-widget-energy-rating.php:71
 msgid "EPC Rating"
 msgstr ""
 
-#: includes/blocks/class-geodir-widget-energy-rating.php:71
+#: includes/blocks/class-geodir-widget-energy-rating.php:73
 msgid ""
 "Enter EPC rating (0 to 100) or leave blank to use the post `energy_rating` "
 "field"
 msgstr ""
 
-#: includes/blocks/class-geodir-widget-energy-rating.php:80
+#: includes/blocks/class-geodir-widget-energy-rating.php:82
 msgid "HERS Rating"
 msgstr ""
 
-#: includes/blocks/class-geodir-widget-energy-rating.php:82
+#: includes/blocks/class-geodir-widget-energy-rating.php:84
 msgid ""
 "Enter HERS rating (0 to 150) or leave blank to use the post `energy_rating` "
 "field"
 msgstr ""
 
-#: includes/blocks/class-geodir-widget-energy-rating.php:212
+#: includes/blocks/class-geodir-widget-energy-rating.php:93
+msgid "DPE Energy Consumption"
+msgstr ""
+
+#: includes/blocks/class-geodir-widget-energy-rating.php:95
+msgid ""
+"Enter DPE energy consumption (0 to 420+) or leave blank to use the post "
+"`energy_rating` field"
+msgstr ""
+
+#: includes/blocks/class-geodir-widget-energy-rating.php:104
+msgid "DPE CO2 Emissions"
+msgstr ""
+
+#: includes/blocks/class-geodir-widget-energy-rating.php:106
+msgid ""
+"Enter DPE CO2 Emissions (0 to 100+) or leave blank to use the post "
+"`energy_rating` field"
+msgstr ""
+
+#: includes/blocks/class-geodir-widget-energy-rating.php:201
+#, php-format
+msgctxt "EPC rating value"
+msgid "EPC Rating: %d"
+msgstr ""
+
+#: includes/blocks/class-geodir-widget-energy-rating.php:272
 #, php-format
 msgid "HERS Rating: %s"
+msgstr ""
+
+#: includes/blocks/class-geodir-widget-energy-rating.php:345
+#, php-format
+msgctxt "DPE rating value"
+msgid "Energy Consumption: %d kWh/m²/year"
+msgstr ""
+
+#: includes/blocks/class-geodir-widget-energy-rating.php:379
+#, php-format
+msgctxt "DPE rating value"
+msgid "CO2 Emissions: %d kg CO2/m²·year"
 msgstr ""
 
 #: includes/blocks/class-geodir-widget-mortgage-calculator.php:28
