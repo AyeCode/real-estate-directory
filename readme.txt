@@ -46,6 +46,9 @@ Automatic updates should work seamlessly. To avoid unforeseen problems, we alway
 
 == Changelog =
 
+= 2.0.10 - 2025-12-TBD =
+* Option added to show French DPE energy & climate class - ADDED
+
 = 2.0.9 - 2025-12-04 =
 * WordPress 6.9 compatibility check - COMPATIBILITY
 

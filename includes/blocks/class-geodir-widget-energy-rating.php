@@ -58,6 +58,8 @@ class GeoDir_Widget_Energy_Rating extends WP_Super_Duper {
 				''     => __( 'Auto (use listing location)', 'real-estate-directory' ),
 				'epc'  => __( 'EPC Rating (European Union / UK)', 'real-estate-directory' ),
 				'hers' => __( 'HERS (United States)', 'real-estate-directory' ),
+				'dpe'  => __( 'DPE Energy (France)', 'real-estate-directory' ),
+				'dpe_c' => __( 'DPE Climate (France)', 'real-estate-directory' )
 			),
 			'default'  => '',
 			'desc_tip' => true,
@@ -86,6 +88,28 @@ class GeoDir_Widget_Energy_Rating extends WP_Super_Duper {
 			'element_require' => '[%type%]=="hers"',
 		);
 
+		$arguments['dpe_value'] = array(
+			'type'            => 'text',
+			'title'           => __( 'DPE Energy Consumption', 'real-estate-directory' ),
+			'placeholder'     => '0-420+',
+			'desc'            => __( 'Enter DPE energy consumption (0 to 420+) or leave blank to use the post `energy_rating` field', 'real-estate-directory' ),
+			'default'         => '',
+			'desc_tip'        => true,
+			'group'           => __( 'Defaults', 'real-estate-directory' ),
+			'element_require' => '[%type%]=="dpe"',
+		);
+
+		$arguments['dpe_c_value'] = array(
+			'type'            => 'text',
+			'title'           => __( 'DPE CO2 Emissions', 'real-estate-directory' ),
+			'placeholder'     => '0-100+',
+			'desc'            => __( 'Enter DPE CO2 Emissions (0 to 100+) or leave blank to use the post `energy_rating` field', 'real-estate-directory' ),
+			'default'         => '',
+			'desc_tip'        => true,
+			'group'           => __( 'Defaults', 'real-estate-directory' ),
+			'element_require' => '[%type%]=="dpe_c"',
+		);
+
 		$arguments['css_class'] = sd_get_class_input();
 
 		return $arguments;
@@ -103,25 +127,58 @@ class GeoDir_Widget_Energy_Rating extends WP_Super_Duper {
 	public function output( $instance = array(), $args = array(), $content = '' ) {
 		global $gd_post;
 
-		if ( isset( $gd_post->energy_rating ) ) {
-			$epc_rating = $hers_rating = absint( $gd_post->energy_rating );
+		$_type = ! empty( $instance['type'] ) ? esc_attr( $instance['type'] ) : 'auto';
+
+		if ( in_array( $_type, array( 'dpe', 'dpe_c', 'epc', 'hers' ) ) ) {
+			$type = $_type;
+		} elseif ( ! empty( $gd_post->country ) ) {
+			if ( $gd_post->country == 'United States' ) {
+				$type = 'hers';
+			} elseif ( $gd_post->country == 'France' ) {
+				$type = 'dpe';
+			} else {
+				$type = 'epc';
+			}
 		} else {
-			$epc_rating  = ! empty( $instance['epc_rating'] ) ? (int) $instance['epc_rating'] : 50;
-			$hers_rating = ! empty( $instance['hers_rating'] ) ? (int) $instance['hers_rating'] : 100;
+			$type = 'epc';
 		}
 
-		$type = ! empty( $instance['type'] ) ? esc_attr( $instance['type'] ) : 'auto';
+		if ( $type == 'dpe' ) {
+			// DPE Energy
+			$rating = ! empty( $instance['dpe_value'] ) ? absint( $instance['dpe_value'] ) : 0;
 
-		if ( 'epc' === $type ) {
-			return $this->output_epc( $epc_rating );
-		} elseif ( 'hers' === $type ) {
-			return $this->output_hers( $hers_rating );
-		} else {
-			if ( ! empty( $gd_post->country ) && $gd_post->country == 'United States' ) {
-				return $this->output_hers( $hers_rating );
-			} else {
-				return $this->output_epc( $epc_rating );
+			if ( empty( $rating ) ) {
+				$rating = isset( $gd_post->energy_rating ) ? absint( $gd_post->energy_rating ) : 210;
 			}
+
+			return $this->output_dpe( $rating );
+		} elseif ( $type == 'dpe_c' ) {
+			// DPE Climate
+			$rating = ! empty( $instance['dpe_c_value'] ) ? absint( $instance['dpe_c_value'] ) : 0;
+
+			if ( empty( $rating ) ) {
+				$rating = isset( $gd_post->energy_rating ) ? absint( $gd_post->energy_rating ) : 50;
+			}
+
+			return $this->output_dpe_climate( $rating );
+		} elseif ( $type == 'hers' ) {
+			// HERS
+			$rating = ! empty( $instance['hers_rating'] ) ? absint( $instance['hers_rating'] ) : 0;
+
+			if ( empty( $rating ) ) {
+				$rating = isset( $gd_post->energy_rating ) ? absint( $gd_post->energy_rating ) : 100;
+			}
+
+			return $this->output_hers( $rating );
+		} else {
+			// EPC
+			$rating = ! empty( $instance['epc_rating'] ) ? absint( $instance['epc_rating'] ) : 0;
+
+			if ( empty( $rating ) ) {
+				$rating = isset( $gd_post->energy_rating ) ? absint( $gd_post->energy_rating ) : 50;
+			}
+
+			return $this->output_epc( $rating );
 		}
 	}
 
@@ -140,8 +197,11 @@ class GeoDir_Widget_Energy_Rating extends WP_Super_Duper {
 		// The marker's left position will be the EPC rating
 		$marker_left = $this->sapPointToPercentage( $epc_rating ) . '%';
 
+		// translators: The DPE rating value.
+		$title = wp_sprintf( _x( 'EPC Rating: %d', 'EPC rating value', 'real-estate-directory' ), $epc_rating );
+
 		$output = '<div class="position-relative z-index-1">';
-		$output .= '<div id="marker" class="position-absolute top-50 translate-middle-y rounded" style="right:' . esc_attr( $marker_left ) . ';background:#000000a3;width:10px;height:45px;top:15px!important;margin-right:-10px;"></div>';
+		$output .= '<div id="marker" class="c-pointer position-absolute top-50 translate-middle-y rounded" style="right:' . esc_attr( $marker_left ) . ';background:#000000a3;width:10px;height:45px;top:15px!important;margin-right:-10px;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="' . esc_attr( $title ) . '"></div>';
 		$output .= '</div>';
 
 		$output .= '<div class="progress position-relative" style="height: 30px;">';
@@ -209,7 +269,7 @@ class GeoDir_Widget_Energy_Rating extends WP_Super_Duper {
 		$marker_left = round( $rating / 150 * 100, 5 ) . '%';
 
 		// translators: The hers rating value.
-		$title =  sprintf( __( 'HERS Rating: %s', 'real-estate-directory' ), esc_attr( $rating ) );
+		$title = wp_sprintf( __( 'HERS Rating: %s', 'real-estate-directory' ), esc_attr( $rating ) );
 
 		$output = '<div class="position-relative z-index-1">';
 
@@ -267,5 +327,73 @@ class GeoDir_Widget_Energy_Rating extends WP_Super_Duper {
 		} else {
 			return 'G';
 		}
+	}
+
+	public function output_dpe( $rating ) {
+		// Define rating category widths and colors
+		$rating_categories = array(
+			'A' => array( 'width' => '14.285714285714%', 'color' => '#0b7735' ),
+			'B' => array( 'width' => '8.1632653061224%', 'color' => '#3ca937' ),
+			'C' => array( 'width' => '14.285714285714%', 'color' => '#85ba34' ),
+			'D' => array( 'width' => '14.285714285714%', 'color' => '#ffdf09' ),
+			'E' => array( 'width' => '16.326530612245%', 'color' => '#ef9124' ),
+			'F' => array( 'width' => '18.367346938776%', 'color' => '#ea402e' ),
+			'G' => array( 'width' => '14.285714285714%', 'color' => '#d51216' )
+		);
+
+		// translators: The DPE rating value.
+		$title    = wp_sprintf( _x( 'Energy Consumption: %d kWh/m²/year', 'DPE rating value', 'real-estate-directory' ), $rating );
+
+		$rating   = min( $rating, 490 );
+		$width    = round( 5 / 490 * 100, 5 );
+		$position = round( $rating / 490 * 100, 5 ) - ( $width / 2 );
+
+		$output = '<div class="position-relative z-index-1">';
+		$output .= '<div id="marker" class="c-pointer position-absolute top-50 translate-middle-y rounded" style="left:' . esc_attr( $position ) . '%;background:#000000a3;width:' . (float) $width . '%;height:45px;top:15px!important;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="' . esc_attr( $title ) . '"></div>';
+		$output .= '</div>';
+
+		$output .= '<div class="progress position-relative" style="height: 30px;">';
+
+		foreach ( $rating_categories as $category => $data ) {
+			$output .= '<div class="progress-bar" role="progressbar" style="width: ' . esc_attr( $data['width'] ) . ';background:' . esc_attr( $data['color'] ) . ' !important;" aria-valuenow="' . intval( $data['width'] ) . '" aria-valuemin="0" aria-valuemax="490">' . esc_html( $category ) . '</div>';
+		}
+
+		$output .= '</div>';
+
+		return $output;
+	}
+
+	public function output_dpe_climate( $rating ) {
+		// Define rating category widths and colors
+		$rating_categories = array(
+			'A' => array( 'width' => '5.4545454545455%', 'color' => '#0b7735' ),
+			'B' => array( 'width' => '4.5454545454545%', 'color' => '#3ca937' ),
+			'C' => array( 'width' => '17.272727272727%', 'color' => '#85ba34' ),
+			'D' => array( 'width' => '18.181818181818%', 'color' => '#ffdf09' ),
+			'E' => array( 'width' => '18.181818181818%', 'color' => '#ef9124' ),
+			'F' => array( 'width' => '27.272727272727%', 'color' => '#ea402e' ),
+			'G' => array( 'width' => '9.0909090909091%', 'color' => '#d51216' )
+		);
+
+		// translators: The DPE rating value.
+		$title    = wp_sprintf( _x( 'CO2 Emissions: %d kg CO2/m²·year', 'DPE rating value', 'real-estate-directory' ), $rating );
+
+		$rating   = min( $rating, 110 );
+		$width    = round( 1.1 / 110 * 100, 5 );
+		$position = round( $rating / 110 * 100, 5 ) - ( $width / 2 );
+
+		$output = '<div class="position-relative z-index-1">';
+		$output .= '<div id="marker" class="c-pointer position-absolute top-50 translate-middle-y rounded" style="left:' . esc_attr( $position ) . '%;background:#000000a3;width:' . (float) $width . '%;height:45px;top:15px!important;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="' . esc_attr( $title ) . '"></div>';
+		$output .= '</div>';
+
+		$output .= '<div class="progress position-relative" style="height: 30px;">';
+
+		foreach ( $rating_categories as $category => $data ) {
+			$output .= '<div class="progress-bar" role="progressbar" style="width: ' . esc_attr( $data['width'] ) . ';background:' . esc_attr( $data['color'] ) . ' !important;" aria-valuenow="' . intval( $data['width'] ) . '" aria-valuemin="0" aria-valuemax="110">' . esc_html( $category ) . '</div>';
+		}
+
+		$output .= '</div>';
+
+		return $output;
 	}
 }
